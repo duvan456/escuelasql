@@ -16,24 +16,62 @@ export const achievements: Achievement[] = [
 
 export const ACHIEVEMENTS = achievements;
 
+interface AchievementProgress {
+  completedLevels: Record<string, {
+    stars: number;
+    moduleId?: string;
+    noHints?: boolean;
+    bestTimeSeconds?: number;
+  }>;
+  achievements: string[];
+  noHintStreak: number;
+}
+
+interface AchievementModule {
+  id: string;
+  levels: { id: string }[];
+}
+
 /**
  * Check which achievements the user has unlocked based on their progress.
  * @param progress - Current user progress state
+ * @param modules - All modules and their level IDs
  * @returns List of newly unlocked achievement IDs
  */
-export function checkAchievements(progress: any): string[] {
+export function checkAchievements(progress: AchievementProgress, modules: AchievementModule[]): string[] {
   const newAchievements: string[] = [];
+  const completedLevelIds = Object.keys(progress.completedLevels);
+  const hasAchievement = (id: string) => progress.achievements.includes(id);
+  const hasCompletedModule = (module: AchievementModule) =>
+    module.levels.every(level => Boolean(progress.completedLevels[level.id]));
+  const hasPerfectModule = (module: AchievementModule) =>
+    module.levels.every(level => progress.completedLevels[level.id]?.stars === 3);
   
-  if (!progress.achievements.includes('first_query') && Object.keys(progress.completedLevels).length >= 1) {
+  if (!hasAchievement('first_query') && completedLevelIds.length >= 1) {
     newAchievements.push('first_query');
   }
   
-  if (!progress.achievements.includes('ten_levels') && Object.keys(progress.completedLevels).length >= 10) {
+  if (!hasAchievement('ten_levels') && completedLevelIds.length >= 10) {
     newAchievements.push('ten_levels');
   }
 
-  // NOTE: Logic for other achievements would require more detailed game state tracking
-  // (e.g., speed_demon, perfect_module) and can be implemented as needed.
+  if (!hasAchievement('no_hints_streak_5') && progress.noHintStreak >= 5) {
+    newAchievements.push('no_hints_streak_5');
+  }
+
+  if (!hasAchievement('all_module_complete') && modules.some(hasCompletedModule)) {
+    newAchievements.push('all_module_complete');
+  }
+
+  if (!hasAchievement('speed_demon') && completedLevelIds.some(
+    levelId => (progress.completedLevels[levelId].bestTimeSeconds ?? Infinity) < 30
+  )) {
+    newAchievements.push('speed_demon');
+  }
+
+  if (!hasAchievement('perfect_module') && modules.some(hasPerfectModule)) {
+    newAchievements.push('perfect_module');
+  }
   
   return newAchievements;
 }

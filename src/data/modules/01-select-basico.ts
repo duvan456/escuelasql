@@ -4,7 +4,7 @@ export const selectBasico: Module = {
   id: '01-select-basico',
   title: 'SELECT Básico',
   description: 'Aprende los fundamentos para extraer datos. Como todo buen contador, tu primer paso es saber dónde está la información.',
-  icon: '🔍',
+  icon: 'search',
   difficulty: 'principiante',
   schemaKey: 'contabilidad',
   levels: [
@@ -58,6 +58,7 @@ export const selectBasico: Module = {
     },
     {
       id: 'lvl-1-4',
+      schemaKey: 'nomina',
       title: 'Renombrando para Jefes',
       story: 'Al gerente no le gustan los nombres de las columnas en la base de datos. Pide que el listado de empleados se vea más profesional.',
       instruction: 'Selecciona la tabla `empleados` (cambia al esquema nómina). Muestra el `nombre` como "Nombre Completo" y el `salario` como "Asignación Salarial".',

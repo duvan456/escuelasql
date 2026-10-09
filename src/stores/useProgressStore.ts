@@ -5,6 +5,9 @@ import { PLAYER_RANKS } from '../lib/utils/constants';
 interface CompletedLevelData {
   stars: number;
   bestAttempts: number;
+  moduleId?: string;
+  noHints?: boolean;
+  bestTimeSeconds?: number;
 }
 
 interface ProgressState {
@@ -13,8 +16,14 @@ interface ProgressState {
   currentStreak: number;
   lastPlayedDate: string | null;
   achievements: string[];
+  noHintStreak: number;
   
-  completeLevel: (levelId: string, stars: number, attempts: number) => void;
+  completeLevel: (
+    levelId: string,
+    stars: number,
+    attempts: number,
+    metadata?: { moduleId?: string; noHints?: boolean; timeSeconds?: number }
+  ) => void;
   addXp: (xp: number) => void;
   updateStreak: () => void;
   unlockAchievement: (achievementId: string) => void;
@@ -34,17 +43,31 @@ export const useProgressStore = create<ProgressState>()(
       currentStreak: 0,
       lastPlayedDate: null,
       achievements: [],
+      noHintStreak: 0,
 
-      completeLevel: (levelId, stars, attempts) => set((state) => {
+      completeLevel: (levelId, stars, attempts, metadata) => set((state) => {
         const existing = state.completedLevels[levelId];
         const newBestAttempts = existing ? Math.min(existing.bestAttempts, attempts) : attempts;
         const newStars = existing ? Math.max(existing.stars, stars) : stars;
+        const isNewLevel = !existing;
+        const bestTimeSeconds = metadata?.timeSeconds === undefined
+          ? existing?.bestTimeSeconds
+          : Math.min(existing?.bestTimeSeconds ?? metadata.timeSeconds, metadata.timeSeconds);
         
         return {
           completedLevels: {
             ...state.completedLevels,
-            [levelId]: { stars: newStars, bestAttempts: newBestAttempts }
-          }
+            [levelId]: {
+              stars: newStars,
+              bestAttempts: newBestAttempts,
+              moduleId: metadata?.moduleId ?? existing?.moduleId,
+              noHints: metadata?.noHints ?? existing?.noHints,
+              bestTimeSeconds,
+            }
+          },
+          noHintStreak: isNewLevel
+            ? metadata?.noHints ? (state.noHintStreak ?? 0) + 1 : 0
+            : state.noHintStreak ?? 0,
         };
       }),
 

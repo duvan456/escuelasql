@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useState, useCallback, useEffect } from 'react'
+import { use, useState, useCallback, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Award, Heart, Lightbulb, AlertCircle, RotateCcw } from 'lucide-react'
@@ -41,7 +41,7 @@ export default function LevelPage({ params }: { params: Promise<{ moduloId: stri
   const nextLevel = currentModule?.levels[currentLevelIndex + 1]
 
   // Determine schema
-  const schemaKey = currentModule?.schemaKey || 'contabilidad'
+  const schemaKey = currentLevel?.schemaKey || currentModule?.schemaKey || 'contabilidad'
   const schemaSQL = schemas[schemaKey] || schemaContabilidad
   const seedSQL = seeds[schemaKey] || seedContabilidad
 
@@ -62,11 +62,13 @@ export default function LevelPage({ params }: { params: Promise<{ moduloId: stri
 
   // Expected result from running the expected query
   const [expectedResult, setExpectedResult] = useState<{ columns: string[]; rows: any[][] } | null>(null)
+  const levelStartedAt = useRef(Date.now())
 
   // Initialize level
   useEffect(() => {
     if (currentModule && currentLevel) {
       startLevel(currentModule.id, currentLevel.id)
+      levelStartedAt.current = Date.now()
       setQueryResult(null)
       setQueryError(null)
       setFeedback(null)
@@ -120,13 +122,17 @@ export default function LevelPage({ params }: { params: Promise<{ moduloId: stri
         setEarnedXp(Math.round(xp))
 
         useGameStore.setState({ isLevelComplete: true })
-        completeLevel(currentLevel!.id, stars, attempts + 1)
+        completeLevel(currentLevel!.id, stars, attempts + 1, {
+          moduleId: currentModule!.id,
+          noHints: hintsUsed === 0,
+          timeSeconds: (Date.now() - levelStartedAt.current) / 1000,
+        })
         addXp(Math.round(xp))
         updateStreak()
 
         // Check for new achievements
         const currentProgress = useProgressStore.getState()
-        const newAchievements = checkAchievements(currentProgress)
+        const newAchievements = checkAchievements(currentProgress, allModules)
         newAchievements.forEach(achId => unlockAchievement(achId))
       } else {
         setFeedback(comparison.feedback ?? 'Los datos devueltos no coinciden con lo esperado.')

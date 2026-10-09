@@ -3,6 +3,7 @@ export type ValidationMode = 'exact' | 'unordered' | 'contains';
 
 export interface Level {
   id: string;
+  schemaKey?: 'contabilidad' | 'nomina';
   title: string;
   story: string;
   instruction: string;

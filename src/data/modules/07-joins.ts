@@ -25,6 +25,7 @@ export const joins: Module = {
     },
     {
       id: 'lvl-7-2',
+      schemaKey: 'contabilidad',
       title: 'Facturas con Nombre y Apellido',
       story: '(Cambiando a Contabilidad). Ver facturas con cliente_id=5 no sirve de mucho al imprimir. Necesitamos el nombre del cliente.',
       instruction: 'Haz un JOIN entre `facturas` y `clientes`. Muestra el ID de la factura, la fecha, y el nombre del cliente.',
@@ -40,6 +41,7 @@ export const joins: Module = {
     },
     {
       id: 'lvl-7-3',
+      schemaKey: 'contabilidad',
       title: 'El Detalle de la Compra',
       story: 'Un cliente pregunta por qué su factura 1 salió tan cara. Necesitamos ver los productos que se le cobraron en esa factura.',
       instruction: 'Une `detalle_factura` con `productos`. Muestra el `factura_id`, el `nombre` del producto y la `cantidad`. Filtra (WHERE) para mostrar solo la factura_id = 1.',
@@ -55,6 +57,7 @@ export const joins: Module = {
     },
     {
       id: 'lvl-7-4',
+      schemaKey: 'contabilidad',
       title: 'Clientes Fantasmas',
       story: '¿Hay clientes registrados que nunca nos han comprado nada? El equipo comercial quiere contactarlos.',
       instruction: 'Usa LEFT JOIN desde `clientes` hacia `facturas`. Muestra el `nombre` del cliente y el `id` de la factura. Filtra donde facturas.id IS NULL.',
@@ -70,6 +73,7 @@ export const joins: Module = {
     },
     {
       id: 'lvl-7-5',
+      schemaKey: 'contabilidad',
       title: 'El Triple JOIN',
       story: 'El auditor quiere el reporte definitivo: Nombre del cliente, fecha de la factura y nombre del producto comprado.',
       instruction: 'Haz JOIN de 3 tablas: facturas, clientes, y detalle_factura. Une facturas con clientes, y luego facturas con detalle_factura (O detalle con productos... espera, une detalle_factura con facturas y productos). Simplifiquemos: Une detalle_factura con facturas y luego con productos. Muestra facturas.fecha y productos.nombre.',

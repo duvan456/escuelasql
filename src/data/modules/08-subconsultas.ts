@@ -39,6 +39,7 @@ export const subconsultas: Module = {
     },
     {
       id: 'lvl-8-3',
+      schemaKey: 'contabilidad',
       title: 'Productos sin Vender',
       story: '(Esquema Contabilidad). Hay productos en inventario que nunca se han facturado. ¡Hagamos una promoción!',
       instruction: 'Encuentra los `productos` (nombre) cuyo `id` NO esté (NOT IN) en la columna `producto_id` de la tabla `detalle_factura`.',
@@ -54,6 +55,7 @@ export const subconsultas: Module = {
     },
     {
       id: 'lvl-8-4',
+      schemaKey: 'contabilidad',
       title: 'Clientes con Compras Grandes',
       story: 'Queremos encontrar los nombres de los clientes que tienen al menos una factura con un valor mayor a 5,000,000.',
       instruction: 'Muestra los nombres de los `clientes` cuyo `id` esté IN (SELECT cliente_id FROM facturas WHERE total > 5000000).',
@@ -69,6 +71,7 @@ export const subconsultas: Module = {
     },
     {
       id: 'lvl-8-5',
+      schemaKey: 'contabilidad',
       title: 'El Producto Estrella',
       story: '¿Cuál es el producto más caro que tenemos a la venta? (No vale limitarlo).',
       instruction: 'Encuentra el `nombre` y `precio` del producto en la tabla `productos` usando una subconsulta con MAX(precio).',

@@ -118,8 +118,8 @@ export default function ReferenciaPage() {
             <BookOpen size={24} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-slate-800">Referencia SQL Contable</h1>
-            <p className="text-slate-600">Guía rápida de sintaxis y consultas prácticas</p>
+            <h1 className="text-3xl font-bold text-slate-200">Referencia SQL Contable</h1>
+            <p className="text-slate-200">Guía rápida de sintaxis y consultas prácticas</p>
           </div>
         </div>
 

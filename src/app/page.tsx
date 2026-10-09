@@ -30,7 +30,7 @@ export default function HomePage() {
             <div className="mx-auto w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
               <Target size={24} />
             </div>
-            <h3 className="text-xl font-semibold">🎯 Aprende haciendo</h3>
+            <h3 className="text-xl font-semibold text-slate-800">🎯 Aprende haciendo</h3>
             <p className="text-slate-600">
               Resuelve problemas reales paso a paso, desde lo más básico hasta consultas avanzadas.
             </p>
@@ -40,7 +40,7 @@ export default function HomePage() {
             <div className="mx-auto w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
               <Database size={24} />
             </div>
-            <h3 className="text-xl font-semibold">📊 Contexto contable</h3>
+            <h3 className="text-xl font-semibold text-slate-800">📊 Contexto contable</h3>
             <p className="text-slate-600">
               Practica con bases de datos familiares: contabilidad, nómina e inventarios.
             </p>
@@ -50,7 +50,7 @@ export default function HomePage() {
             <div className="mx-auto w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
               <Trophy size={24} />
             </div>
-            <h3 className="text-xl font-semibold">🏆 Gana puntos y sube de nivel</h3>
+            <h3 className="text-xl font-semibold text-slate-800">🏆 Gana puntos y sube de nivel</h3>
             <p className="text-slate-600">
               Desbloquea logros, gana experiencia y demuestra tu dominio de los datos.
             </p>

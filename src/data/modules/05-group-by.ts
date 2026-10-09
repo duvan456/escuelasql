@@ -55,6 +55,7 @@ export const groupBy: Module = {
     },
     {
       id: 'lvl-5-4',
+      schemaKey: 'contabilidad',
       title: 'Análisis de Ventas (Cambio de Esquema)',
       story: 'Volviendo a contabilidad, necesitamos saber cómo nos pagan nuestros clientes.',
       instruction: 'Ve al esquema de contabilidad (tabla facturas). Muestra el `metodo_pago` y cuenta cuántas facturas tienen ese método. Agrupa por `metodo_pago`.',
@@ -69,6 +70,7 @@ export const groupBy: Module = {
     },
     {
       id: 'lvl-5-5',
+      schemaKey: 'contabilidad',
       title: 'Ventas por Cliente Ordenadas',
       story: 'Queremos identificar a nuestros mejores clientes basándonos en cuánto dinero han facturado con nosotros.',
       instruction: 'Selecciona `cliente_id` y la suma del `total` de facturas. Agrupa por `cliente_id` y ORDENA el resultado por la suma de mayor a menor (DESC).',

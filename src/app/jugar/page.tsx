@@ -1,9 +1,29 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import {
+  Search,
+  ArrowDown,
+  Calculator,
+  Funnel,
+  GitMerge,
+  Layers,
+  PieChart,
+} from 'lucide-react'
 import { allModules } from '@/data/modules'
 import { ModuleCard } from '@/components/game/ModuleCard'
 import { useProgressStore } from '@/stores/useProgressStore'
+
+const moduleIcons = {
+  search: Search,
+  funnel: Funnel,
+  'arrow-down': ArrowDown,
+  calculator: Calculator,
+  'pie-chart': PieChart,
+  filter: Funnel,
+  'git-merge': GitMerge,
+  layers: Layers,
+} as const
 
 export default function ModuleSelectorPage() {
   const router = useRouter()
@@ -29,8 +49,8 @@ export default function ModuleSelectorPage() {
   return (
     <div className="max-w-6xl mx-auto p-6 w-full space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-slate-800">Módulos de Aprendizaje</h1>
-        <p className="text-slate-600">Selecciona un módulo para comenzar o continuar tu aprendizaje.</p>
+        <h1 className="text-3xl font-bold text-slate-200">Módulos de Aprendizaje</h1>
+        <p className="text-slate-200">Selecciona un módulo para comenzar o continuar tu aprendizaje.</p>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -45,7 +65,10 @@ export default function ModuleSelectorPage() {
               module={{
                 title: mod.title,
                 description: mod.description,
-                icon: <span className="text-2xl">{mod.icon}</span>,
+                icon: (() => {
+                  const Icon = moduleIcons[mod.icon as keyof typeof moduleIcons]
+                  return Icon ? <Icon size={24} /> : <span className="text-2xl">{mod.icon}</span>
+                })(),
                 difficulty: difficultyLabel(mod.difficulty),
               }}
               progress={{ completed, total }}

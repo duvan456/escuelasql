@@ -1,7 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useGameStore } from '../stores/useGameStore';
 import { useProgressStore } from '../stores/useProgressStore';
 import { calculateStars, calculateXp } from '../lib/game/scoring';
+import { checkAchievements } from '../lib/game/achievements';
+import { allModules } from '../data/modules';
 import { useSqlEngine } from './useSqlEngine';
 
 export interface LevelData {
@@ -26,6 +28,7 @@ export function useLevel(levelData: LevelData) {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const levelStartedAt = useRef(Date.now());
 
   const submitQuery = useCallback(() => {
     if (!isReady) return;
@@ -45,9 +48,15 @@ export function useLevel(levelData: LevelData) {
         const stars = calculateStars(gameStore.attempts + 1, gameStore.hintsUsed);
         const xp = calculateXp(levelData.baseXp, gameStore.attempts + 1, gameStore.hintsUsed, progressStore.currentStreak);
         
-        progressStore.completeLevel(levelData.id, stars, gameStore.attempts + 1);
+        progressStore.completeLevel(levelData.id, stars, gameStore.attempts + 1, {
+          moduleId: levelData.moduleId,
+          noHints: gameStore.hintsUsed === 0,
+          timeSeconds: (Date.now() - levelStartedAt.current) / 1000,
+        });
         progressStore.addXp(xp);
         progressStore.updateStreak();
+        const newAchievements = checkAchievements(useProgressStore.getState(), allModules);
+        newAchievements.forEach(achievementId => progressStore.unlockAchievement(achievementId));
         
         // At this point, UI should trigger confetti/celebration based on gameStore.isLevelComplete
       }

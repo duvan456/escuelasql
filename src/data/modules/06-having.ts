@@ -67,6 +67,7 @@ export const having: Module = {
     },
     {
       id: 'lvl-6-5',
+      schemaKey: 'nomina',
       title: 'Departamentos Pesados (Nómina)',
       story: 'Volviendo a la nómina, la gerencia quiere saber qué departamentos tienen un costo salarial total mayor a 10,000,000.',
       instruction: 'En la tabla `empleados`, muestra el `departamento_id` y la suma de salarios. Agrupa por departamento y usa HAVING para mostrar solo los mayores a 10000000.',
